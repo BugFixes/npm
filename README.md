@@ -1,6 +1,6 @@
 # BugFix.es Node Module
 
-This is the simplest way of using BugFixes with Node
+This is the simplest way of using BugFix.es with Node
 
 ## Replace console.LOGLEVEL with the BugFix.es version
 ````javascript
