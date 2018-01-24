@@ -1,0 +1,12 @@
+{
+  "name": "BugFixes",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:BugFixes/npm.git",
+  "author": "Keloran <keloran@bugfix.es>",
+  "license": "MIT",
+  "description": "NPM for BugFixes so that its easy to integrate into Node projects",
+  "dependencies": {
+    "jsonwebtoken": "^8.1.1"
+  }
+}
