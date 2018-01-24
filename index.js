@@ -1,4 +1,3 @@
-'use strict';
 const http = require('http');
 const jwt = require('jsonwebtoken');
 
@@ -149,9 +148,6 @@ class BugFixes {
 
     // HTTP
     sendMessage(payload) {
-        this.console.log("HTTP Send PayLoad", payload);
-        this.console.log("HTTP Send Key", this.API_KEY);
-
         const request = http.request({
             hostname: "https://api.bugfix.es",
             port: "443",
@@ -175,5 +171,55 @@ class BugFixes {
 BugFixes.LOG = 1;
 BugFixes.INFO = 2;
 BugFixes.ERROR = 3;
+
+// Function remap
+BugFixes.log = function(message) {
+    if (arguments.length >= 2) {
+        finalMessage = "";
+
+        for (let i = 0; i < arguments.length; i++) {
+            finalMessage += arguments[i];
+            finalMessage += ", "
+        }
+        message = finalMessage.substring(0, finalMessage.length - 2);
+    }
+
+    new BugFixes({
+        message: message,
+        logLevel: BugFixes.LOG
+    });
+};
+BugFixes.info = function(message) {
+    if (arguments.length >= 2) {
+        finalMessage = "";
+
+        for (let i = 0; i < arguments.length; i++) {
+            finalMessage += arguments[i];
+            finalMessage += ", "
+        }
+        message = finalMessage.substring(0, finalMessage.length - 2);
+    }
+
+    new BugFixes({
+        message: message,
+        logLevel: BugFixes.INFO
+    });
+};
+BugFixes.error = function(message) {
+    if (arguments.length >= 2) {
+        finalMessage = "";
+
+        for (let i = 0; i < arguments.length; i++) {
+            finalMessage += arguments[i];
+            finalMessage += ", "
+        }
+        message = finalMessage.substring(0, finalMessage.length - 2);
+    }
+
+    new BugFixes({
+        message: message,
+        logLevel: BugFixes.ERROR
+    });
+};
 
 module.exports = BugFixes;
