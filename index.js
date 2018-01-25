@@ -156,7 +156,7 @@ class BugFixes {
             headers: {
                 "Content-Type": "application/json",
                 "Content-Length": Buffer.byteLength(payload),
-                "api_key": this.API_KEY
+                "X-API-KEY": this.API_KEY
             }
         });
 
