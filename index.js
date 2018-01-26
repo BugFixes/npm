@@ -103,11 +103,8 @@ class BugFixes {
         this.console.log(message);
     };
     log_http(message) {
-        let payload = jwt.sign({
-            message: message,
-            logLevel: this.LOG
-        }, this.API_SECRET);
-        this.sendMessage(payload);
+        let messagePayLoad = jwt.sign(message, this.API_SECRET);
+        this.sendMessage(messagePayLoad, this.LOG);
     };
 
     // Info
@@ -121,11 +118,8 @@ class BugFixes {
         this.console.info(message);
     };
     info_http(message) {
-        let payload = jwt.sign({
-            message: message,
-            logLevel: this.INFO
-        }, this.API_SECRET);
-        this.sendMessage(payload);
+        let messagePayLoad = jwt.sign(message, this.API_SECRET);
+        this.sendMessage(messagePayLoad, this.INFO);
     };
 
     // Error
@@ -139,19 +133,21 @@ class BugFixes {
         this.console.error(message);
     };
     error_http(message) {
-        let payload = jwt.sign({
-            message: message,
-            logLevel: this.ERROR
-        }, this.API_SECRET);
-        this.sendMessage(payload);
+        let messagePayLoad = jwt.sign(message, this.API_SECRET);
+        this.sendMessage(messagePayLoad, this.ERROR);
     };
 
     // HTTP
-    sendMessage(payload) {
+    sendMessage(messagePayload, logLevel) {
+        let payLoad = {
+            message: messagePayLoad,
+            logLevel: logLevel
+        };
+
         const request = http.request({
             hostname: "https://api.bugfix.es",
             port: "443",
-            path: "/v1/",
+            path: "/v1/bug",
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
