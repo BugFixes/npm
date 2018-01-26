@@ -140,9 +140,10 @@ class BugFixes {
     // HTTP
     sendMessage(messagePayload, logLevel) {
         let payLoad = {
-            message: messagePayLoad,
+            message: messagePayload,
             logLevel: logLevel
         };
+        payLoad = JSON.stringify(payLoad);
 
         const request = http.request({
             hostname: "https://api.bugfix.es",
@@ -151,7 +152,7 @@ class BugFixes {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Content-Length": Buffer.byteLength(payload),
+                "Content-Length": Buffer.byteLength(payLoad),
                 "X-API-KEY": this.API_KEY
             }
         });
@@ -159,7 +160,7 @@ class BugFixes {
         request.on('error', (error) => {
             console.log("BugFixes Error", error);
         });
-        request.write(payload);
+        request.write(payLoad);
         request.end();
     }
 };
