@@ -43,3 +43,43 @@ Or you can do it in the function call (not recommended)
     BugFixes.INFO = BugFixes.info() = console.info();
     BugFixes.ERROR = BugFixes.error() = console.error();
 ````
+
+# General Functions
+These are general functions that we have found quite useful
+````
+    const bugFunctions = require('bugfixes/functions');
+````
+
+## Check If Defined
+````
+    let tester = null;
+    if (!bugFunctions.checkIfDefined(tester)) {
+        console.log("Tester is not defined");
+    }
+````
+
+## Error
+````
+    res.json(bugFunctions.error(200, 'Error Description'));
+````
+Result
+````
+    {
+        code: 200,
+        message: 'Error Description'
+        type: 'Error'
+    }
+````
+
+## Result
+````
+    res.json(bugFunctions.result(200, 'Success Message'));
+````
+Result
+````
+    {
+        code: 200,
+        message: 'Success Message',
+        type: 'Success'
+    }
+````
