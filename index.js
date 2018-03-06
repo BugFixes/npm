@@ -1,6 +1,8 @@
 const http = require('http')
 const jwt = require('jsonwebtoken')
 const functions = require('./functions')
+const Console = require('./outputs/console')
+const Network = require('./outputs/network')
 
 class BugFixes {
   constructor (params, logLevel = null) {
@@ -28,34 +30,41 @@ class BugFixes {
       }
     }
 
-    // Console
-    if (functions.checkIfDefined(console)) {
-      this.console = console
-    } else if (functions.checkIfDefined(context)) {
-      this.console = context
-    }
-
     // Log Levels
     if (this.logLevel === this.INFO) {
       this.info(this.message)
     } else if (this.logLevel === this.ERROR) {
       this.error(this.message)
     } else {
-      this.log(this.message)
+      if (functions.checkIfDefined(this.message)) {
+        this.log(this.message)
+      }
     }
 
         // Context
     if (functions.checkIfDefined(this.context)) {
       this.console = this.context
     }
-  };
+  }
+
+  setLogLevel(logLevel) {
+    this.logLevel = logLevel
+
+    return this
+  }
+
+  setMessage(message) {
+    this.message = message
+
+    return this
+  }
 
   parseParams (params) {
-    this.message = params.message
+    this.setMessage(params.message)
 
     // LogLevel
     if (functions.checkIfDefined(params.logLevel)) {
-      this.logLevel = params.logLevel
+      this.setLogLevel(params.logLevel)
     }
 
     // Context
@@ -78,89 +87,77 @@ class BugFixes {
     if (functions.checkIfDefined(params.API_SECRET)) {
       this.API_SECRET = params.API_SECRET
     }
-  };
+  }
 
   // Log
   log (message) {
+    this.message = message
     if (functions.checkIfDefined(this.API_KEY) && functions.checkIfDefined(this.API_SECRET)) {
-      this.logHttp(message)
+      this.logHttp()
     }
-    this.logConsole(message)
-  };
+    this.logConsole()
+  }
   logConsole (message) {
-    this.console.log('\u2211', message)
-  };
+    const bugConsole = new Console()
+    bugConsole
+      .setPayload(this.message)
+      .log()
+  }
   logHttp (message) {
-    let messagePayLoad = jwt.sign(message, this.API_SECRET)
-    this.sendMessage(messagePayLoad, this.LOG)
-  };
+    const bugNetwork = new Network()
+    bugNetwork.setKey(this.API_KEY)
+      .setSecret(this.API_SECRET)
+      .setPayload(this.message)
+      .setLogLevel(BugFixes.LOG)
+      .sendMessage()
+  }
 
   // Info
   info (message) {
+    this.message = message
     if (functions.checkIfDefined(this.API_KEY) && functions.checkIfDefined(this.API_SECRET)) {
-      this.infoHttp(message)
+      this.infoHttp()
     }
-    this.infoConsole(message)
-  };
-  infoConsole (message) {
-    this.console.info('\u203c', message)
-  };
-  infoHttp (message) {
-    let messagePayLoad = jwt.sign(message, this.API_SECRET)
-    this.sendMessage(messagePayLoad, this.INFO)
-  };
+    this.infoConsole()
+  }
+  infoConsole () {
+    const bugConsole = new Console()
+    bugConsole
+      .setPayload(this.message)
+      .info()
+  }
+  infoHttp () {
+    const bugNetwork = new Network()
+    bugNetwork.setKey(this.API_KEY)
+      .setSecret(this.API_SECRET)
+      .setPayload(this.message)
+      .setLogLevel(BugFixes.INFO)
+      .sendMessage()
+  }
 
   // Error
   error (message) {
+    this.message = message
     if (functions.checkIfDefined(this.API_KEY) && functions.checkIfDefined(this.API_SECRET)) {
-      this.errorHttp(message)
+      this.errorHttp()
     }
-    this.errorConsole(message)
+    this.errorConsole()
   }
-  errorConsole (message) {
-    this.console.error('\u2206', message)
-  };
-  errorHttp (message) {
-    let messagePayLoad = jwt.sign(message, this.API_SECRET)
-    this.sendMessage(messagePayLoad, this.ERROR)
-  };
-
-  // HTTP
-  sendMessage (messagePayload, logLevel) {
-    const self = this;
-
-    const promise = new Promise(function(resolve, reject) {
-      let payLoad = {
-        message: messagePayload,
-        logLevel: logLevel
-      }
-      payLoad = JSON.stringify(payLoad)
-
-      const request = http.request({
-        hostname: 'https://api.bugfix.es',
-        port: '443',
-        path: '/v1/bug',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Content-Length': Buffer.byteLength(payLoad),
-          'X-API-KEY': self.API_KEY
-        }
-      })
-
-      request.on('error', (error) => {
-        reject(Error(error))
-      })
-      request.end(payLoad, 'utf8', resolve(true));
-    });
-
-    promise.then(function(result) {
-      console.log("Worked");
-    }, function(error) {
-      console.log("BugFixes Error", error)
-    })
+  errorConsole () {
+    const bugConsole = new Console()
+    bugConsole
+      .setPayload(this.message)
+      .error()
   }
-};
+  errorHttp () {
+    const bugNetwork = new Network()
+    bugNetwork.setKey(this.API_KEY)
+      .setSecret(this.API_SECRET)
+      .setPayload(this.message)
+      .setLogLevel(BugFixes.ERROR)
+      .sendMessage()
+  }
+}
 
 BugFixes.LOG = 1
 BugFixes.INFO = 2
@@ -178,10 +175,8 @@ BugFixes.log = function (message) {
     message = finalMessage.substring(0, finalMessage.length - 2)
   }
 
-  const bug = new BugFixes({
-    message: message,
-    logLevel: BugFixes.LOG
-  })
+  const bug = new BugFixes()
+  bug.log(message)
 
   return true
 }
@@ -196,10 +191,8 @@ BugFixes.info = function (message) {
     message = finalMessage.substring(0, finalMessage.length - 2)
   }
 
-  const bug = new BugFixes({
-    message: message,
-    logLevel: BugFixes.INFO
-  })
+  const bug = new BugFixes()
+  bug.info(message)
 
   return true
 }
@@ -214,10 +207,8 @@ BugFixes.error = function (message) {
     message = finalMessage.substring(0, finalMessage.length - 2)
   }
 
-  const bug = new BugFixes({
-    message: message,
-    logLevel: BugFixes.ERROR
-  })
+  let bug = new BugFixes()
+  bug.error(message)
 
   return true
 }

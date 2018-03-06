@@ -49,10 +49,10 @@ describe('Test Logger', () => {
 describe('Test Service', () => {
   it('Send to Service', (done) => {
     const genericBug = new BugFixes({
-      message: 'Generic',
+      message: 'Test Service',
       logLevel: BugFixes.LOG,
-      API_KEY: 'tester',
-      API_SECRET: 'tester'
+      key: 'tester',
+      secret: 'tester'
     })
 
     assert.isObject(genericBug, 'Service Worked')
