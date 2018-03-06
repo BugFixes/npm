@@ -127,29 +127,38 @@ class BugFixes {
 
   // HTTP
   sendMessage (messagePayload, logLevel) {
-    let payLoad = {
-      message: messagePayload,
-      logLevel: logLevel
-    }
-    payLoad = JSON.stringify(payLoad)
+    const self = this;
 
-    const request = http.request({
-      hostname: 'https://api.bugfix.es',
-      port: '443',
-      path: '/v1/bug',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(payLoad),
-        'X-API-KEY': this.API_KEY
+    const promise = new Promise(function(resolve, reject) {
+      let payLoad = {
+        message: messagePayload,
+        logLevel: logLevel
       }
-    })
+      payLoad = JSON.stringify(payLoad)
 
-    request.on('error', (error) => {
-      console.log('BugFixes Error', error)
+      const request = http.request({
+        hostname: 'https://api.bugfix.es',
+        port: '443',
+        path: '/v1/bug',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(payLoad),
+          'X-API-KEY': self.API_KEY
+        }
+      })
+
+      request.on('error', (error) => {
+        reject(Error(error))
+      })
+      request.end(payLoad, 'utf8', resolve(true));
+    });
+
+    promise.then(function(result) {
+      console.log("Worked");
+    }, function(error) {
+      console.log("BugFixes Error", error)
     })
-    request.write(payLoad)
-    request.end()
   }
 };
 

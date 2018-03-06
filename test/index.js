@@ -45,3 +45,17 @@ describe('Test Logger', () => {
     done()
   })
 })
+
+describe('Test Service', () => {
+  it('Send to Service', (done) => {
+    const genericBug = new BugFixes({
+      message: 'Generic',
+      logLevel: BugFixes.LOG,
+      API_KEY: 'tester',
+      API_SECRET: 'tester'
+    })
+
+    assert.isObject(genericBug, 'Service Worked')
+    done()
+  })
+})
