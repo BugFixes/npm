@@ -1,5 +1,3 @@
-const http = require('http')
-const jwt = require('jsonwebtoken')
 const functions = require('./functions')
 const Console = require('./outputs/console')
 const Network = require('./outputs/network')
@@ -212,5 +210,8 @@ BugFixes.error = function (message) {
 
   return true
 }
+
+// Functions
+BugFixes.functions = functions
 
 module.exports = BugFixes

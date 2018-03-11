@@ -4,8 +4,8 @@ This is the simplest way of using BugFix.es with Node
 
 ## Replace console.LOGLEVEL with the BugFix.es version
 ````javascript
-    console.log("message");
-    BugFixes.log("message");
+    console.log("message")
+    BugFixes.log("message")
 ````
 
 Or you can do it with the object method
@@ -14,10 +14,10 @@ Or you can do it with the object method
     new BugFixes({
         message: "message",
         logLevel: bugFixes.LOG
-    });
+    })
 
     // Mixed Object
-    new BugFixes('message', bugFixes.LOG);
+    new BugFixes('message', bugFixes.LOG)
 ````
 
 ## If you have a BugFix.es API
@@ -34,33 +34,36 @@ Or you can do it in the function call (not recommended)
         logLevel: <logLevel>,
         key: <key>,
         secret: <secret>
-    });
+    })
 ````
 
 # Log Levels
 ````
     BugFixes.LOG = BugFixes.log() = console.log()
-    BugFixes.INFO = BugFixes.info() = console.info();
-    BugFixes.ERROR = BugFixes.error() = console.error();
+    BugFixes.INFO = BugFixes.info() = console.info()
+    BugFixes.ERROR = BugFixes.error() = console.error()
 ````
 
 # General Functions
 These are general functions that we have found quite useful
 ````
-    const bugFunctions = require('bugfixes/functions');
+    const bugFunctions = BugFixes.functions
+
+    or
+    const bugFunctions = require('bugfixes/functions)
 ````
 
 ## Check If Defined
 ````
-    let tester = null;
+    let tester = null
     if (!bugFunctions.checkIfDefined(tester)) {
-        console.log("Tester is not defined");
+        console.log("Tester is not defined")
     }
 ````
 
 ## Error
 ````
-    res.json(bugFunctions.error(200, 'Error Description'));
+    res.json(bugFunctions.error(200, 'Error Description'))
 ````
 Result
 ````
@@ -73,7 +76,7 @@ Result
 
 ## Result
 ````
-    res.json(bugFunctions.result(200, 'Success Message'));
+    res.json(bugFunctions.result(200, 'Success Message'))
 ````
 Result
 ````
