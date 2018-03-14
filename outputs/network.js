@@ -42,7 +42,7 @@ class Network {
   sendMessage () {
     const self = this
 
-    const promise = new Promise(function (resolve, reject) {
+    const promise = new Promise((resolve, reject) => {
       let payLoad = {
         message: self.messagePayLoad,
         logLevel: self.logLevel
@@ -68,11 +68,11 @@ class Network {
       request.end(payLoad, 'utf8', resolve(true))
     })
 
-    promise.then(function (result) {
+    promise.then((result) => {
       const cons = new Console()
       cons.setPayload('Worked')
       cons.log()
-    }, function (error) {
+    }, (error) => {
       const cons = new Console()
       cons.setPayload(error)
         .error()
