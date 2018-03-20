@@ -39,30 +39,33 @@ class BugFixes {
       }
     }
 
-        // Context
+    // Context
     if (functions.checkIfDefined(this.context)) {
       this.console = this.context
     }
   }
 
-  setLogLevel(logLevel) {
-    this.logLevel = logLevel
-
-    return this
+  set loglevel (loglevel) {
+    this._loglevel = loglevel
+  }
+  get loglevel () {
+    return this._loglevel
   }
 
-  setMessage(message) {
-    this.message = message
-
-    return this
+  set message (message) {
+    this._message = message
   }
+  get message () {
+    return this._message
+  }
+
 
   parseParams (params) {
-    this.setMessage(params.message)
+    this.message = params.message
 
     // LogLevel
     if (functions.checkIfDefined(params.logLevel)) {
-      this.setLogLevel(params.logLevel)
+      this.logLevel = params.logLevel
     }
 
     // Context
@@ -97,17 +100,16 @@ class BugFixes {
   }
   logConsole (message) {
     const bugConsole = new Console()
-    bugConsole
-      .setPayload(this.message)
-      .log()
+    bugConsole.payload = this.message
+    bugConsole.log()
   }
   logHttp (message) {
     const bugNetwork = new Network()
-    bugNetwork.setKey(this.API_KEY)
-      .setSecret(this.API_SECRET)
-      .setPayload(this.message)
-      .setLogLevel(BugFixes.LOG)
-      .sendMessage()
+    bugNetwork.key = this.API_KEY
+    bugNetwork.secret = this.API_SECRET
+    bugNetwork.payload = this.message
+    bugNetwork.loglevel = BugFixes.LOG
+    bugNetwork.sendMessage()
   }
 
   // Info
@@ -120,17 +122,16 @@ class BugFixes {
   }
   infoConsole () {
     const bugConsole = new Console()
-    bugConsole
-      .setPayload(this.message)
-      .info()
+    bugConsole.payload = this.message
+    bugConsole.info()
   }
   infoHttp () {
     const bugNetwork = new Network()
-    bugNetwork.setKey(this.API_KEY)
-      .setSecret(this.API_SECRET)
-      .setPayload(this.message)
-      .setLogLevel(BugFixes.INFO)
-      .sendMessage()
+    bugNetwork.key = this.API_KEY
+    bugNetwork.secret = this.API_SECRET
+    bugNetwork.payload = this.message
+    bugNetwork.loglevel = BugFixes.INFO
+    bugNetwork.sendMessage()
   }
 
   // Error
@@ -143,17 +144,16 @@ class BugFixes {
   }
   errorConsole () {
     const bugConsole = new Console()
-    bugConsole
-      .setPayload(this.message)
-      .error()
+    bugConsole.payload = this.message
+    bugConsole.error()
   }
   errorHttp () {
     const bugNetwork = new Network()
-    bugNetwork.setKey(this.API_KEY)
-      .setSecret(this.API_SECRET)
-      .setPayload(this.message)
-      .setLogLevel(BugFixes.ERROR)
-      .sendMessage()
+    bugNetwork.key = this.API_KEY
+    bugNetwork.secret = this.API_SECRET
+    bugNetwork.loglevel = BugFixes.ERROR
+    bugNetwork.payload = this.message
+    bugNetwork.sendMessage()
   }
 }
 
@@ -167,7 +167,12 @@ BugFixes.log = function (message) {
     let finalMessage = ''
 
     for (let i = 0; i < arguments.length; i++) {
-      finalMessage += arguments[i]
+      if (typeof arguments[i] === 'object') {
+        finalMessage += JSON.stringify(arguments[i])
+      } else {
+        finalMessage += arguments[i]
+      }
+
       finalMessage += ', '
     }
     message = finalMessage.substring(0, finalMessage.length - 2)
@@ -183,7 +188,12 @@ BugFixes.info = function (message) {
     let finalMessage = ''
 
     for (let i = 0; i < arguments.length; i++) {
-      finalMessage += arguments[i]
+      if (typeof arguments[i] === 'object') {
+        finalMessage += JSON.stringify(arguments[i])
+      } else {
+        finalMessage += arguments[i]
+      }
+
       finalMessage += ', '
     }
     message = finalMessage.substring(0, finalMessage.length - 2)
@@ -199,7 +209,12 @@ BugFixes.error = function (message) {
     let finalMessage = ''
 
     for (let i = 0; i < arguments.length; i++) {
-      finalMessage += arguments[i]
+      if (typeof arguments[i] === 'object') {
+        finalMessage += JSON.stringify(arguments[i])
+      } else {
+        finalMessage += arguments[i]
+      }
+
       finalMessage += ', '
     }
     message = finalMessage.substring(0, finalMessage.length - 2)

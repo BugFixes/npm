@@ -1,5 +1,4 @@
 /* global describe, it */
-'use strict'
 
 const BugFixes = require('../index')
 const Functions = require('../functions')
@@ -42,6 +41,28 @@ describe('Test Generic', () => {
 describe('Test Logger', () => {
   it('Logger', (done) => {
     assert.isTrue(Functions.Logger('Logger Test'), 'Logger Worked')
+    done()
+  })
+})
+
+describe('message with sub args', () => {
+  it('should stringify the object', (done) => {
+    const obj = {
+      tester: {
+        test: true
+      }
+    }
+
+    assert.isTrue(BugFixes.error('Object Test', obj), 'Logger Worked')
+    done()
+  })
+
+  it('should stringify the function', (done) => {
+    const fn = function (bob) {
+      return 'true'
+    }
+
+    assert.isTrue(BugFixes.error('Function Test', fn), 'Logger Worked')
     done()
   })
 })

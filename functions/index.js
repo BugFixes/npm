@@ -1,5 +1,3 @@
-'use strict'
-
 const BugFunctions = {
   checkIfDefined: (attribute) => {
     let returnState = true

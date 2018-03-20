@@ -11,37 +11,37 @@ class Console {
     }
   }
 
-  // Set the Icon
-  setIcon (icon) {
-    this.icon = icon
-
-    return this
+  set icon (icon) {
+    this._icon = icon
+  }
+  get icon () {
+    return this._icon
   }
 
-  // Set the Payload
-  setPayload (payLoad) {
-    this.payLoad = payLoad
-
-    return this
+  set payload (payload) {
+    this._payload = payload
+  }
+  get payload () {
+    return this._payload
   }
 
   log () {
-    this.setIcon('\u2111')
-    this.console.log(this.icon, this.payLoad)
+    this.icon = '\u2111'
+    this.console.log(this.icon, this.payload)
 
     return this
   }
 
   error () {
-    this.setIcon('\u2206')
-    this.console.error(this.icon, this.payLoad)
+    this.icon = '\u2206'
+    this.console.error(this.icon, this.payload)
 
     return this
   }
 
   info () {
-    this.setIcon('\u203c')
-    this.console.info(this.icon, this.payLoad)
+    this.icon = '\u203c'
+    this.console.info(this.icon, this.payload)
 
     return this
   }

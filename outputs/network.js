@@ -9,34 +9,40 @@ class Network {
     this.address = 'https://api.bugfix.es'
   }
 
-  setSecret (secret) {
-    this.secret = secret
-
-    return this
+  set secret (secret) {
+    this._secret = secret
+  }
+  get secret () {
+    return this._secret
   }
 
-  setKey (key) {
-    this.key = key
-
-    return this
+  set key (key) {
+    this._key = key
+  }
+  get key () {
+    return this._key
   }
 
-  setPayload (payLoad) {
-    this.payLoad = payLoad
-
-    return this.setMessagePayLoad()
+  set payload (payload) {
+    this._payload = payload
+    this.message = payload
+  }
+  get payload () {
+    return this._payload
   }
 
-  setMessagePayLoad () {
-    this.messagePayLoad = jwt.sign(this.payLoad, this.secret)
-
-    return this
+  set message (message) {
+    this._message = jwt.sign(message, this.secret)
+  }
+  get message () {
+    return this._message
   }
 
-  setLogLevel (logLevel) {
-    this.logLevel = logLevel
-
-    return this
+  set loglevel (loglevel) {
+    this._loglevel = loglevel
+  }
+  get loglevel () {
+    return this._loglevel
   }
 
   sendMessage () {
@@ -44,8 +50,8 @@ class Network {
 
     const promise = new Promise((resolve, reject) => {
       let payLoad = {
-        message: self.messagePayLoad,
-        logLevel: self.logLevel
+        message: self.message,
+        logLevel: self.loglevel
       }
       payLoad = JSON.stringify(payLoad)
 
@@ -70,12 +76,12 @@ class Network {
 
     promise.then((result) => {
       const cons = new Console()
-      cons.setPayload('Worked')
+      cons.payload = 'Worked'
       cons.log()
     }, (error) => {
       const cons = new Console()
-      cons.setPayload(error)
-        .error()
+      cons.payload = error
+      cons.error()
     })
   }
 }
