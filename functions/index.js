@@ -46,6 +46,26 @@ const BugFunctions = {
     return uuid(verifyString, id)
   },
 
+  lambdaResult: (code, message) => {
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.result(code, message))
+    }
+  },
+
+  lambdaError: (code, message) => {
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.error(code, message))
+    }
+  },
+
   Logger: (error, req, res, next) => {
     const BugFixes = require('../index')
 
