@@ -52,7 +52,7 @@ const BugFunctions = {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(this.result(code, message)),
+      body: JSON.stringify(BugFunctions.result(code, message)),
       isBase64Encoded: false
     }
   },
@@ -63,7 +63,7 @@ const BugFunctions = {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(this.error(code, message)),
+      body: JSON.stringify(BugFunctions.error(code, message)),
       isBase64Encoded: false
     }
   },
