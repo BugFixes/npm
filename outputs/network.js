@@ -23,6 +23,13 @@ class Network {
     return this._key
   }
 
+  set id (id) {
+    this._id = id
+  }
+  get id () {
+    return this._id
+  }
+
   set payload (payload) {
     this._payload = payload
     this.message = payload
@@ -62,7 +69,8 @@ class Network {
         headers: {
           'Content-Type': 'application/json',
           'Content-Length': Buffer.byteLength(payLoad),
-          'X-API-KEY': self.key
+          'X-API-KEY': self.key,
+          'X-API-ID': self.id
         }
       }
 

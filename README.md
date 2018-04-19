@@ -25,6 +25,7 @@ You can either put the key and secret into your environment settings
 ````
     BUGFIXES_KEY = <key>
     BUGFIXES_SECRET = <secret>
+    BUGFIXES_ID = <app_id>
 ````
 
 Or you can do it in the function call (not recommended)
@@ -33,7 +34,8 @@ Or you can do it in the function call (not recommended)
         message: <message>,
         logLevel: <logLevel>,
         key: <key>,
-        secret: <secret>
+        secret: <secret>,
+        id: <app_id>
     })
 ````
 
@@ -85,4 +87,36 @@ Result
         message: 'Success Message',
         type: 'Success'
     }
+````
+
+## Lambda Results
+````
+  return callback(null, bugFunctions.lambdaResult(200, {data: 'stuff'}))
+````
+Result
+````
+  {
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: '{"code": 100, "message": {"data": "stuff"}, "type": "Success"}',
+    isBase64Encoded: false
+  }
+````
+
+## Lambda Error
+````
+  return callback(bugFunctions.lambdaError(200, {data: 'stuff'})
+````
+Result
+````
+  {
+    statusCode :200,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: '{"code": 200, "message": {"data": "stuff"}, "type": "Error"}',
+    isBase64Encoded: false
+  }
 ````

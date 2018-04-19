@@ -19,12 +19,17 @@ class BugFixes {
     // API
     if (!functions.checkIfDefined(this.API_KEY)) {
       if (functions.checkIfDefined(process.env.BUGFIXES_KEY)) {
-        this.API_KEY = process.env.BUGFIXES_KEY
+        this.apiKey = process.env.BUGFIXES_KEY
       }
     }
     if (!functions.checkIfDefined(this.API_SECRET)) {
       if (functions.checkIfDefined(process.env.BUGFIXES_SECRET)) {
-        this.API_SECRET = process.env.BUGFIXES_SECRET
+        this.apiSecret = process.env.BUGFIXES_SECRET
+      }
+    }
+    if (!functions.checkIfDefined(this.API_ID)) {
+      if (functions.checkIfDefined(process.env.BUGFIXES_ID)) {
+        this.apiId = process.env.BUGFIXES_ID
       }
     }
 
@@ -59,6 +64,26 @@ class BugFixes {
     return this._message
   }
 
+  set apiId (apiId) {
+    this._apiId = apiId
+  }
+  get apiId () {
+    return this._apiId
+  }
+
+  set apiSecret (apiSecret) {
+    this._apiSecret = apiSecret
+  }
+  get apiSecret () {
+    return this._apiSecret
+  }
+
+  set apiKey (apiKey) {
+    this._apiKey = apiKey
+  }
+  get apiKey () {
+    return this._apiKey
+  }
 
   parseParams (params) {
     this.message = params.message
@@ -75,25 +100,33 @@ class BugFixes {
 
     // API_KEY
     if (functions.checkIfDefined(params.key)) {
-      this.API_KEY = params.key
+      this.apiKey = params.key
     }
     if (functions.checkIfDefined(params.API_KEY)) {
-      this.API_KEY = params.API_KEY
+      this.apiKey = params.API_KEY
     }
 
     // API_SECRET
     if (functions.checkIfDefined(params.secret)) {
-      this.API_SECRET = params.secret
+      this.apiSecret = params.secret
     }
     if (functions.checkIfDefined(params.API_SECRET)) {
-      this.API_SECRET = params.API_SECRET
+      this.apiSecret = params.API_SECRET
+    }
+
+    // API_ID
+    if (functions.checkIfDefined(params.id)) {
+      this.apiId = params.id
+    }
+    if (functions.checkIfDefined(params.API_ID)) {
+      this.apiId = params.API_ID
     }
   }
 
   // Log
   log (message) {
     this.message = message
-    if (functions.checkIfDefined(this.API_KEY) && functions.checkIfDefined(this.API_SECRET)) {
+    if (functions.checkIfDefined(this.apiKey) && functions.checkIfDefined(this.apiSecret) && functions.checkIfDefined(this.apiId)) {
       this.logHttp()
     }
     this.logConsole()
@@ -105,8 +138,9 @@ class BugFixes {
   }
   logHttp (message) {
     const bugNetwork = new Network()
-    bugNetwork.key = this.API_KEY
-    bugNetwork.secret = this.API_SECRET
+    bugNetwork.key = this.apiKey
+    bugNetwork.secret = this.apiSecret
+    bugNetwork.id = this.apiId
     bugNetwork.payload = this.message
     bugNetwork.loglevel = BugFixes.LOG
     bugNetwork.sendMessage()
@@ -115,7 +149,7 @@ class BugFixes {
   // Info
   info (message) {
     this.message = message
-    if (functions.checkIfDefined(this.API_KEY) && functions.checkIfDefined(this.API_SECRET)) {
+    if (functions.checkIfDefined(this.apiKey) && functions.checkIfDefined(this.apiSecret) && functions.checkIfDefined(this.apiId)) {
       this.infoHttp()
     }
     this.infoConsole()
@@ -127,8 +161,9 @@ class BugFixes {
   }
   infoHttp () {
     const bugNetwork = new Network()
-    bugNetwork.key = this.API_KEY
-    bugNetwork.secret = this.API_SECRET
+    bugNetwork.key = this.apiKey
+    bugNetwork.secret = this.apiSecret
+    bugNetwork.id = this.apiId
     bugNetwork.payload = this.message
     bugNetwork.loglevel = BugFixes.INFO
     bugNetwork.sendMessage()
@@ -137,7 +172,7 @@ class BugFixes {
   // Error
   error (message) {
     this.message = message
-    if (functions.checkIfDefined(this.API_KEY) && functions.checkIfDefined(this.API_SECRET)) {
+    if (functions.checkIfDefined(this.apiKey) && functions.checkIfDefined(this.apiSecret) && functions.checkIfDefined(this.apiId)) {
       this.errorHttp()
     }
     this.errorConsole()
@@ -149,8 +184,9 @@ class BugFixes {
   }
   errorHttp () {
     const bugNetwork = new Network()
-    bugNetwork.key = this.API_KEY
-    bugNetwork.secret = this.API_SECRET
+    bugNetwork.key = this.apiKey
+    bugNetwork.secret = this.apiSecret
+    bugNetwork.id = this.apiId
     bugNetwork.loglevel = BugFixes.ERROR
     bugNetwork.payload = this.message
     bugNetwork.sendMessage()
