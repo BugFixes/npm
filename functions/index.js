@@ -1,3 +1,6 @@
+const uuid = require('uuid/v5');
+const BugFixes = require('../index');
+
 const BugFunctions = {
   checkIfDefined: (attribute) => {
     let returnState = true;
@@ -16,11 +19,7 @@ const BugFunctions = {
   },
 
   _returnObj: (code, message, type) => {
-    return {
-      code: code,
-      message: message,
-      type: type
-    };
+    return { code, message, type };
   },
 
   result: (code, message) => {
@@ -36,12 +35,7 @@ const BugFunctions = {
   },
 
   createVerify: (name, email, id) => {
-    const uuid = require('uuid/v5');
-
-    const verifyString = JSON.stringify({
-      name: name,
-      email: email
-    });
+    const verifyString = JSON.stringify({ name, email });
 
     return uuid(verifyString, id);
   },
@@ -50,10 +44,10 @@ const BugFunctions = {
     return {
       statusCode: 200,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(BugFunctions.result(code, message)),
-      isBase64Encoded: false
+      isBase64Encoded: false,
     };
   },
 
@@ -61,16 +55,14 @@ const BugFunctions = {
     return {
       statusCode: 200,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(BugFunctions.error(code, message)),
-      isBase64Encoded: false
+      isBase64Encoded: false,
     };
   },
 
   Logger: (error, req, res, next) => {
-    const BugFixes = require('../index');
-
     if (BugFunctions.checkIfDefined(error.stack)) {
       BugFixes.error(error.stack);
     } else {
@@ -82,8 +74,7 @@ const BugFunctions = {
     }
 
     return true;
-  }
-}
+  },
+};
 
-/* global module */
 module.exports = BugFunctions;
