@@ -5,121 +5,141 @@ const Network = require('./outputs/network')
 class BugFixes {
   constructor (params, logLevel = null) {
     if (typeof params === 'object') {
-      this.parseParams(params)
+      this.parseParams(params);
     } else {
-      this.message = params
-      this.logLevel = logLevel
+      this.message = params;
+      this.logLevel = logLevel;
     }
 
     // Log Level defenitions
-    this.LOG = 1
-    this.INFO = 2
-    this.ERROR = 3
+    this.LOG = 1;
+    this.INFO = 2;
+    this.ERROR = 3;
 
     // API
     if (!functions.checkIfDefined(this.API_KEY)) {
       if (functions.checkIfDefined(process.env.BUGFIXES_KEY)) {
-        this.apiKey = process.env.BUGFIXES_KEY
+        this.apiKey = process.env.BUGFIXES_KEY;
       }
     }
     if (!functions.checkIfDefined(this.API_SECRET)) {
       if (functions.checkIfDefined(process.env.BUGFIXES_SECRET)) {
-        this.apiSecret = process.env.BUGFIXES_SECRET
+        this.apiSecret = process.env.BUGFIXES_SECRET;
       }
     }
     if (!functions.checkIfDefined(this.API_ID)) {
       if (functions.checkIfDefined(process.env.BUGFIXES_ID)) {
-        this.apiId = process.env.BUGFIXES_ID
+        this.apiId = process.env.BUGFIXES_ID;
+      }
+    }
+    if (!functions.checkIfDefined(this.ICON_SKIP)) {
+      if (functions.checkIfDefined(process.env.BUGFIXES_ICON_SKIP)) {
+        this.iconSkip = process.env.BUGFIXES_ICON_SKIP;
       }
     }
 
     // Log Levels
     if (this.logLevel === this.INFO) {
-      this.info(this.message)
+      this.info(this.message);
     } else if (this.logLevel === this.ERROR) {
-      this.error(this.message)
+      this.error(this.message);
     } else {
       if (functions.checkIfDefined(this.message)) {
-        this.log(this.message)
+        this.log(this.message);
       }
     }
 
     // Context
     if (functions.checkIfDefined(this.context)) {
-      this.console = this.context
+      this.console = this.context;
     }
   }
 
   set loglevel (loglevel) {
-    this._loglevel = loglevel
+    this._loglevel = loglevel;
   }
   get loglevel () {
-    return this._loglevel
+    return this._loglevel;
   }
 
   set message (message) {
-    this._message = message
+    this._message = message;
   }
   get message () {
-    return this._message
+    return this._message;
   }
 
   set apiId (apiId) {
-    this._apiId = apiId
+    this._apiId = apiId;
   }
   get apiId () {
-    return this._apiId
+    return this._apiId;
   }
 
   set apiSecret (apiSecret) {
-    this._apiSecret = apiSecret
+    this._apiSecret = apiSecret;
   }
   get apiSecret () {
-    return this._apiSecret
+    return this._apiSecret;
   }
 
   set apiKey (apiKey) {
-    this._apiKey = apiKey
+    this._apiKey = apiKey;
   }
   get apiKey () {
-    return this._apiKey
+    return this._apiKey;
+  }
+
+  set iconSkip(skip) {
+    this._iconSkip = skip;
+  }
+  get iconSkip() {
+    return this._iconSkip;
   }
 
   parseParams (params) {
-    this.message = params.message
+    this.message = params.message;
 
     // LogLevel
     if (functions.checkIfDefined(params.logLevel)) {
-      this.logLevel = params.logLevel
+      this.logLevel = params.logLevel;
     }
 
     // Context
     if (functions.checkIfDefined(params.context)) {
-      this.context = params.context
+      this.context = params.context;
     }
 
     // API_KEY
     if (functions.checkIfDefined(params.key)) {
-      this.apiKey = params.key
+      this.apiKey = params.key;
     }
     if (functions.checkIfDefined(params.API_KEY)) {
-      this.apiKey = params.API_KEY
+      this.apiKey = params.API_KEY;
     }
 
     // API_SECRET
     if (functions.checkIfDefined(params.secret)) {
-      this.apiSecret = params.secret
+      this.apiSecret = params.secret;
     }
     if (functions.checkIfDefined(params.API_SECRET)) {
-      this.apiSecret = params.API_SECRET
+      this.apiSecret = params.API_SECRET;
     }
 
     // API_ID
     if (functions.checkIfDefined(params.id)) {
-      this.apiId = params.id
+      this.apiId = params.id;
     }
     if (functions.checkIfDefined(params.API_ID)) {
-      this.apiId = params.API_ID
+      this.apiId = params.API_ID;
+    }
+
+    // ICON_SKIP
+    if (functions.checkIfDefined(params.iconSkip)) {
+      this.iconSkip = params.iconSkip;
+    }
+    if (functions.checkIfDefined(params.ICON_SKIP)) {
+      this.iconSkip = params.ICON_SKIP;
     }
   }
 
@@ -134,6 +154,7 @@ class BugFixes {
   logConsole (message) {
     const bugConsole = new Console()
     bugConsole.payload = this.message
+    bugConsole.iconSkip = this.iconSkip
     bugConsole.log()
   }
   logHttp (message) {
@@ -157,6 +178,7 @@ class BugFixes {
   infoConsole () {
     const bugConsole = new Console()
     bugConsole.payload = this.message
+    bugConsole.iconSkip = this.iconSkip
     bugConsole.info()
   }
   infoHttp () {
@@ -180,6 +202,7 @@ class BugFixes {
   errorConsole () {
     const bugConsole = new Console()
     bugConsole.payload = this.message
+    bugConsole.iconSkip = this.iconSkip
     bugConsole.error()
   }
   errorHttp () {
@@ -193,76 +216,77 @@ class BugFixes {
   }
 }
 
-BugFixes.LOG = 1
-BugFixes.INFO = 2
-BugFixes.ERROR = 3
+BugFixes.LOG = 1;
+BugFixes.INFO = 2;
+BugFixes.ERROR = 3;
 
 // Function remap
 BugFixes.log = function (message) {
   if (arguments.length >= 2) {
-    let finalMessage = ''
+    let finalMessage = '';
 
     for (let i = 0; i < arguments.length; i++) {
       if (typeof arguments[i] === 'object') {
-        finalMessage += JSON.stringify(arguments[i])
+        finalMessage += JSON.stringify(arguments[i]);
       } else {
-        finalMessage += arguments[i]
+        finalMessage += arguments[i];
       }
 
-      finalMessage += ', '
+      finalMessage += ', ';
     }
-    message = finalMessage.substring(0, finalMessage.length - 2)
+    message = finalMessage.substring(0, finalMessage.length - 2);
   }
 
-  const bug = new BugFixes()
-  bug.log(message)
+  const bug = new BugFixes();
+  bug.log(message);
 
-  return true
+  return true;
 }
 BugFixes.info = function (message) {
   if (arguments.length >= 2) {
-    let finalMessage = ''
+    let finalMessage = '';
 
     for (let i = 0; i < arguments.length; i++) {
       if (typeof arguments[i] === 'object') {
-        finalMessage += JSON.stringify(arguments[i])
+        finalMessage += JSON.stringify(arguments[i]);
       } else {
-        finalMessage += arguments[i]
+        finalMessage += arguments[i];
       }
 
-      finalMessage += ', '
+      finalMessage += ', ';
     }
-    message = finalMessage.substring(0, finalMessage.length - 2)
+    message = finalMessage.substring(0, finalMessage.length - 2);
   }
 
-  const bug = new BugFixes()
-  bug.info(message)
+  const bug = new BugFixes();
+  bug.info(message);
 
-  return true
+  return true;
 }
 BugFixes.error = function (message) {
   if (arguments.length >= 2) {
-    let finalMessage = ''
+    let finalMessage = '';
 
     for (let i = 0; i < arguments.length; i++) {
       if (typeof arguments[i] === 'object') {
-        finalMessage += JSON.stringify(arguments[i])
+        finalMessage += JSON.stringify(arguments[i]);
       } else {
-        finalMessage += arguments[i]
+        finalMessage += arguments[i];
       }
 
-      finalMessage += ', '
+      finalMessage += ', ';
     }
-    message = finalMessage.substring(0, finalMessage.length - 2)
+    message = finalMessage.substring(0, finalMessage.length - 2);
   }
 
-  let bug = new BugFixes()
-  bug.error(message)
+  let bug = new BugFixes();
+  bug.error(message);
 
-  return true
+  return true;
 }
 
 // Functions
-BugFixes.functions = functions
+BugFixes.functions = functions;
 
-module.exports = BugFixes
+/* global module */
+module.exports = BugFixes;

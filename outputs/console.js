@@ -5,46 +5,60 @@ class Console {
   constructor () {
     // Console or context
     if (functions.checkIfDefined(console)) {
-      this.console = console
+      this.console = console;
     } else if (functions.checkIfDefined(context)) {
-      this.console = context
+      this.console = context;
     }
   }
 
   set icon (icon) {
-    this._icon = icon
+    this._icon = icon;
   }
   get icon () {
-    return this._icon
+    return this._icon;
   }
 
   set payload (payload) {
-    this._payload = payload
+    this._payload = payload;
   }
   get payload () {
-    return this._payload
+    return this._payload;
+  }
+
+  set iconSkip(skip) {
+    this._skip = skip;
+  }
+  get iconSkip() {
+    return this._skip;
   }
 
   log () {
-    this.icon = '\u2111'
-    this.console.log(this.icon, this.payload)
+    if (!this.iconSkip) {
+      this.icon = '\u2111';
+    }
+    this.console.log(this.icon, this.payload);
 
-    return this
+    return this;
   }
 
   error () {
-    this.icon = '\u2206'
-    this.console.error(this.icon, this.payload)
+    if (!this.iconSkip) {
+      this.icon = '\u2206';
+    }
+    this.console.error(this.icon, this.payload);
 
-    return this
+    return this;
   }
 
   info () {
-    this.icon = '\u203c'
-    this.console.info(this.icon, this.payload)
+    if (!this.iconSkip) {
+      this.icon = '\u203c';
+    }
+    this.console.info(this.icon, this.payload);
 
-    return this
+    return this;
   }
 }
 
-module.exports = Console
+/* global module */
+module.exports = Console;

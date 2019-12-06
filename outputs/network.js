@@ -5,62 +5,62 @@ const Console = require('./console')
 
 class Network {
   constructor () {
-    this.path = '/v1/bug'
-    this.address = 'https://api.bugfix.es'
+    this.path = '/v1/bug';
+    this.address = 'https://api.bugfix.es';
   }
 
   set secret (secret) {
-    this._secret = secret
+    this._secret = secret;
   }
   get secret () {
-    return this._secret
+    return this._secret;
   }
 
   set key (key) {
-    this._key = key
+    this._key = key;
   }
   get key () {
-    return this._key
+    return this._key;
   }
 
   set id (id) {
-    this._id = id
+    this._id = id;
   }
   get id () {
-    return this._id
+    return this._id;
   }
 
   set payload (payload) {
-    this._payload = payload
-    this.message = payload
+    this._payload = payload;
+    this.message = payload;
   }
   get payload () {
-    return this._payload
+    return this._payload;
   }
 
   set message (message) {
-    this._message = jwt.sign(message, this.secret)
+    this._message = jwt.sign(message, this.secret);
   }
   get message () {
-    return this._message
+    return this._message;
   }
 
   set loglevel (loglevel) {
-    this._loglevel = loglevel
+    this._loglevel = loglevel;
   }
   get loglevel () {
-    return this._loglevel
+    return this._loglevel;
   }
 
   sendMessage () {
-    const self = this
+    const self = this;
 
     const promise = new Promise((resolve, reject) => {
       let payLoad = {
         message: self.message,
         logLevel: self.loglevel
       }
-      payLoad = JSON.stringify(payLoad)
+      payLoad = JSON.stringify(payLoad);
 
       const options = {
         hostname: self.address,
@@ -79,7 +79,7 @@ class Network {
           reject(Error(error))
         })
       })
-      request.end(payLoad, 'utf8', resolve(true))
+      request.end(payLoad, 'utf8', resolve(true));
     })
 
     promise.then((result) => {
@@ -94,4 +94,5 @@ class Network {
   }
 }
 
-module.exports = Network
+/* global module */
+module.exports = Network;
