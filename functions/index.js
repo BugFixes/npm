@@ -18,21 +18,13 @@ const BugFunctions = {
     return returnState;
   },
 
-  _returnObj: (code, message, type) => {
-    return { code, message, type };
-  },
+  _returnObj: (code, message, type) => ({ code, message, type }),
 
-  result: (code, message) => {
-    return BugFunctions._returnObj(code, message, 'Success');
-  },
+  result: (code, message) => BugFunctions._returnObj(code, message, 'Success'),
 
-  error: (code, message) => {
-    return BugFunctions._returnObj(code, message, 'Error');
-  },
+  error: (code, message) => BugFunctions._returnObj(code, message, 'Error'),
 
-  defaultError: (code) => {
-    return BugFunctions.error(code, 'Unexpected Error');
-  },
+  defaultError: (code) => BugFunctions.error(code, 'Unexpected Error'),
 
   createVerify: (name, email, id) => {
     const verifyString = JSON.stringify({ name, email });
@@ -40,27 +32,23 @@ const BugFunctions = {
     return uuid(verifyString, id);
   },
 
-  lambdaResult: (code, message) => {
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(BugFunctions.result(code, message)),
-      isBase64Encoded: false,
-    };
-  },
+  lambdaResult: (code, message) => ({
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(BugFunctions.result(code, message)),
+    isBase64Encoded: false,
+  }),
 
-  lambdaError: (code, message) => {
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(BugFunctions.error(code, message)),
-      isBase64Encoded: false,
-    };
-  },
+  lambdaError: (code, message) => ({
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(BugFunctions.error(code, message)),
+    isBase64Encoded: false,
+  }),
 
   Logger: (error, req, res, next) => {
     if (BugFunctions.checkIfDefined(error.stack)) {
